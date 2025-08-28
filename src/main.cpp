@@ -19,8 +19,15 @@ constexpr uint8_t I2C_SCL = D1;     // GPIO5
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+
+// ================= LED =================
+const int LED_PIN = LED_BUILTIN; // Built-in LED on ESP8266 (usually GPIO2), ACTIVE-LOW
+bool led_state = false; // logical state (true = ON)
+bool ledOn = true;
+bool ledOff = false;
+
 // ================= Menu (fixed) =================
-const char* MENU_ITEMS[] = {"Status", "Settings", "About", "Restart", "WiFi", "Debug"};
+const char* MENU_ITEMS[] = {"led ON", "led OFF", "About", "Restart", "WiFi", "Debug"};
 constexpr int MENU_LEN = sizeof(MENU_ITEMS) / sizeof(MENU_ITEMS[0]);
 int cursor = 0;
 int windowStart = 0;
@@ -75,6 +82,7 @@ void drawMenu() {
 
   // --- Title bar ---
   display.fillRect(0, 0, SCREEN_WIDTH, TITLE_H, SSD1306_WHITE);
+  display.setRotation(2);
   display.setTextSize(1);
   display.setTextColor(SSD1306_BLACK);
   display.setCursor(2, 2);
@@ -111,6 +119,12 @@ void drawMenu() {
   display.display();
 }
 
+// ======= LED helpers (ESP8266 LED is ACTIVE-LOW) =======
+void applyLed(bool on) {
+digitalWrite(LED_PIN, on ? LOW : HIGH); // LOW = ON, HIGH = OFF
+led_state = on;
+}
+
 void confirmSelection(const char* text) {
   display.clearDisplay();
   display.setTextSize(1);
@@ -123,10 +137,23 @@ void confirmSelection(const char* text) {
   if (strcmp(text, "Restart") == 0) {
     display.println(F("\nRestarting..."));
     display.display();
-    delay(500);
+    delay(800);
     // ESP.restart();
   }
 
+    if (strcmp(text, "led ON") == 0) {
+    display.println(F("\nLed ON"));
+    display.display();
+    applyLed(ledOn);
+    delay(800);
+  }
+
+    if (strcmp(text, "led OFF") == 0) {
+    display.println(F("\nLed OFF"));
+    display.display();
+    applyLed(ledOff);
+    delay(800);
+  }
   delay(700);
   drawMenu();
 }
@@ -151,6 +178,9 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(PIN_ENC_B), encoderISR, CHANGE);
 
   drawMenu();
+
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN,LOW); // LOW = ON, HIGH = OFF
 }
 
 void loop() {
