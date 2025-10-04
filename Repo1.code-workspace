@@ -1,0 +1,36 @@
+{
+	"folders": [
+		{
+			"path": "../../../../~David/Platformio-stuff/Repo1"
+		},
+		{
+			"name": "matrix_test",
+			"path": "../matrix_test"
+		},
+		{
+			"name": "250816-142955-arduino-blink",
+			"path": "../250816-142955-arduino-blink"
+		},
+		{
+			"name": "test r4 project",
+			"path": "../../test r4 project"
+		},
+		{
+			"name": "ESP32_WebSocket_Server_JSON",
+			"path": "../ESP32_WebSocket_Server_JSON"
+		},
+		{
+			"name": "ESP8266_WebSocket_Server_JSON",
+			"path": "../ESP8266_WebSocket_Server_JSON"
+		},
+		{
+			"name": "Rotary_Encoder_GPT",
+			"path": "../Rotary_Encoder_GPT"
+		},
+		{
+			"name": "Rotary_GPT_oled_ interupts",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
